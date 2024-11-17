@@ -1,0 +1,5 @@
+package fr.insa.ms.userInfoService.model;
+
+public class UserInfos {
+
+}

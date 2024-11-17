@@ -1,0 +1,72 @@
+package fr.insa.ms.userInfoService.config;
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import fr.insa.ms.userInfoService.model.UserInfos;
+import fr.insa.ms.userInfoService.model.UserInfos.HelpStatus;
+
+
+public class NewUser {
+
+
+    public void addNewUser(UserInfos user) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        try {
+            String insertQuery = "INSERT INTO Users (id, firstName, lastName, location, helpStatus) VALUES (?, ?, ?, ?, ?)";
+            // Using PreparedStatement to prevent SQL injection
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+                // Set values for the parameters using the Users class methods
+                preparedStatement.setInt(1, user.getId());
+                preparedStatement.setString(2, user.getFirstName());
+                preparedStatement.setString(3, user.getLastName());
+                preparedStatement.setString(4, user.getLocation());
+                preparedStatement.setString(5, user.getHelpStatus().name()); // Store enum as a string
+
+
+                preparedStatement.executeUpdate();
+                System.out.println("User added successfully");
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
+    }
+
+
+    // Assuming there's a reason to get users by location or help status, modify this as needed
+    public static UserInfos getUserByLocationAndStatus(String location, HelpStatus helpStatus) throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        String sql = "SELECT * FROM Users WHERE location = ? AND helpStatus = ?";
+        
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, location);
+            statement.setString(2, helpStatus.name());
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Get the user if found
+                if (resultSet.next()) {
+                    UserInfos user = new UserInfos();
+                    user.setId(resultSet.getInt("id"));
+                    user.setFirstName(resultSet.getString("firstName"));
+                    user.setLastName(resultSet.getString("lastName"));
+                    user.setLocation(resultSet.getString("location"));
+                    user.setHelpStatus(HelpStatus.valueOf(resultSet.getString("helpStatus")));
+
+
+                    return user;
+                } else {
+                    System.out.println("No matching user found.");
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException :" + e.getMessage());
+            return null;
+        }
+    }
+}

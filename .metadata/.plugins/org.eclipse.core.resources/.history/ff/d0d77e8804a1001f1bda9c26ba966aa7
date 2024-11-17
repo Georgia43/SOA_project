@@ -1,0 +1,76 @@
+package fr.insa.ms.userInfoService.controller;
+
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.insa.ms.userInfoService.model.UserInfos;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USER = "your_database_username";
+    private static final String PASSWORD = "your_database_password";
+
+    @GetMapping("/all")
+    public List<UserInfos> getAllUsers() throws SQLException {
+        List<UserInfos> users = new ArrayList<>();
+        String query = "SELECT * FROM users";
+        
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            
+            while (resultSet.next()) {
+                users.add(new UserInfos(
+                        resultSet.getInt("id"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("location"),
+                        UserInfos.HelpStatus.valueOf(resultSet.getString("help_status")),
+                        resultSet.getString("password")
+                ));
+            }
+        }
+        return users;
+    }
+
+    @GetMapping("/{id}")
+    public UserInfos getUserById(@PathVariable Long id) throws SQLException {
+        String query = "SELECT * FROM users WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+
+            if (resultSet.next()) {
+                return new UserInfos(
+                		 resultSet.getInt("id"),
+                         resultSet.getString("lastName"),
+                         resultSet.getString("firstName"),
+                         resultSet.getString("location"),
+                         UserInfos.HelpStatus.valueOf(resultSet.getString("help_status")),
+                         resultSet.getString("password")
+                         );
+            }
+        }
+        return null;
+    }
+}

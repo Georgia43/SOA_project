@@ -1,0 +1,129 @@
+package fr.insa.ms.helpRequestService.model.controller;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.insa.ms.helpRequestService.config.DatabaseConnection;
+import fr.insa.ms.helpRequestService.model.HelpRequest;
+
+@RestController
+@RequestMapping("/api/demande-aide")
+public class RequestController {
+
+    @PostMapping("/create")
+    public void addNewRequest(@RequestBody HelpRequest helpRequest) throws SQLException {
+        String query = "INSERT INTO demande_aide (id, idUser, idHelper, description, date, help_status) VALUES (?, ?, ?, ?, ?, ?)";
+        Connection connection = DatabaseConnection.getConnection();
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(2, helpRequest.getIdUser());
+            statement.setInt(3, 0);
+            statement.setString(4, helpRequest.getContent());
+            statement.setString(5, helpRequest.getLocation());
+            statement.setString(6, helpRequest.getStatus());
+            statement.setString(7, helpRequest.getDate());
+
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        helpRequest.setId(generatedKeys.getInt(1));
+                    }
+                }
+            }
+            
+            System.out.println("Request added successfully");
+        
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
+    }
+
+
+    // accept a request
+    @PutMapping("/accept/{demandeId}")
+    public void acceptReequest(@PathVariable int id, @RequestParam int idHelper) throws SQLException {
+        String query = "UPDATE HelpRequest SET idHelper = ?, status = ? WHERE id = ?";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, idHelper);  
+            statement.setString(2, "ACCEPTED"); 
+            statement.setLong(3, id);  
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Request updated.");
+             } else {
+                throw new SQLException("Help request not found with ID: " + id);
+            }
+        }
+    }
+
+    @GetMapping("/{id}")
+    public HelpRequest getRequestById(Long demandeId) throws SQLException {
+        String query = "SELECT * FROM demande_aide WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setLong(1, demandeId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                	HelpRequest helpRequest = new HelpRequest();
+                	helpRequest.setId(resultSet.getLong("id"));
+                	helpRequest.setIdUser(resultSet.getLong("idUser"));
+                	helpRequest.setDescription(resultSet.getString("description"));
+                	helpRequest.setDate(resultSet.getDate("date"));
+                    String status = resultSet.getString("help_status");
+                    helpRequest.setHelpStatus(HelpStatus.valueOf(status));
+                    helpRequest.setHelperId(resultSet.getLong("helperId"));
+                    return helpRequest;
+                } else {
+                    throw new SQLException("Help request not found with ID: " + demandeId);
+                }
+            }
+        }
+    }
+
+    // Method to get all help requests
+    @GetMapping("/all")
+    public List<DemandeAide> getAllDemandes() throws SQLException {
+        List<DemandeAide> demandes = new ArrayList<>();
+        String query = "SELECT * FROM demande_aide";
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                DemandeAide demandeAide = new DemandeAide();
+                demandeAide.setId(resultSet.getLong("id"));
+                demandeAide.setIdUser(resultSet.getLong("idUser"));
+                demandeAide.setDescription(resultSet.getString("description"));
+                demandeAide.setDate(resultSet.getDate("date"));
+                String status = resultSet.getString("help_status");
+                demandeAide.setHelpStatus(HelpStatus.valueOf(status));
+                demandeAide.setHelperId(resultSet.getLong("helperId"));
+                demandes.add(demandeAide);
+            }
+        }
+        return demandes;
+    }
+}
