@@ -1537,3 +1537,22 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact org.springfra
 2024-11-17 17:24:00,777 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src/main/resources to target/classes
 2024-11-17 17:24:00,801 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src/main/resources to target/classes
 2024-11-17 17:24:00,807 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/koutsodi/5A/SOAProjet/helpRequestService/src/test/resources
+2024-11-17 17:24:03,949 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src/main/resources to target/classes
+2024-11-17 17:24:03,963 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src/main/resources to target/classes
+2024-11-17 17:24:03,969 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/koutsodi/5A/SOAProjet/msDiscovery/src/test/resources
+2024-11-17 17:24:07,323 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src/main/resources to target/classes
+2024-11-17 17:24:07,342 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src/main/resources to target/classes
+2024-11-17 17:24:07,347 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/koutsodi/5A/SOAProjet/userInfoService/src/test/resources
+2024-11-17 17:31:23,555 [Worker-392: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: fr.insa.ms:notificationService:0.0.1-SNAPSHOT @ /home/koutsodi/5A/SOAProjet/notificationService/pom.xml.
+2024-11-17 17:31:25,244 [Worker-392: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /notificationService/src/main/java
+2024-11-17 17:31:25,247 [Worker-392: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /notificationService/src/main/resources
+2024-11-17 17:31:25,259 [Worker-392: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /notificationService/src/main/resources
+2024-11-17 17:31:25,269 [Worker-392: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /notificationService/src/test/java
+2024-11-17 17:31:25,270 [Worker-392: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /notificationService/src/test/resources
+2024-11-17 17:31:25,576 [Worker-392: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 3 sec
+2024-11-17 17:31:27,858 [Worker-398: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src/main/resources to target/classes
+2024-11-17 17:31:27,876 [Worker-398: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src/main/resources to target/classes
+2024-11-17 17:31:27,882 [Worker-398: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/koutsodi/5A/SOAProjet/notificationService/src/test/resources
+2024-11-17 17:32:43,806 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src/main/resources to target/classes
+2024-11-17 17:32:43,826 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src/main/resources to target/classes
+2024-11-17 17:32:43,844 [Worker-392: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/koutsodi/5A/SOAProjet/notificationService/src/test/resources
