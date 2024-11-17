@@ -74,7 +74,9 @@ public class UserController {
     
     @PostMapping("/addUser")
     public void addNewUser(@RequestBody UserInfos UserInfos) throws SQLException {
+    	
         Connection connection = DatabaseConnection.getConnection();
+        
         try {
             String insertQuery = "INSERT INTO UserInfos (id, firstName, lastName, location, helpStatus) VALUES (?, ?, ?, ?, ?)";
         
