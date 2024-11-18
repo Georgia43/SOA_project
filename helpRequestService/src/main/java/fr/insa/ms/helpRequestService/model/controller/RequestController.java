@@ -8,8 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,6 +78,50 @@ public class RequestController {
                 System.out.println("Request updated.");
              } else {
                 throw new SQLException("Help request not found with ID: " + id);
+            }
+        }
+    }
+    
+    // complete a request
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<?>  completeRequest(@PathVariable int id, @RequestBody Map<String, Integer> requestBody) throws SQLException {
+        String query = "UPDATE HelpRequest SET status = 'COMPLETED' WHERE id = ?";
+        
+        int idHelper = requestBody.get("idHelper");
+        Connection connection = DatabaseConnection.getConnection();
+
+        String checkQuery = "SELECT idHelper, status FROM HelpRequest WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(checkQuery,Statement.RETURN_GENERATED_KEYS);
+        	 PreparedStatement updateStatement = connection.prepareStatement(query)) {
+        	
+            statement.setInt(1, id);  
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	
+                int assignedidHelper = resultSet.getInt("idHelper");
+                String status = resultSet.getString("status");
+                
+                if (assignedidHelper != idHelper) {
+                	System.out.println("The idHelper is not the same as the one that accepted the request.");
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to complete this request.");
+                }
+                if (!status.equals("ACCEPTED")) {
+                	System.out.println("The request can not be completed if it is not accepted.");
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("The request must be in 'ACCEPTED' status to complete.");
+                }
+                
+                	updateStatement.setInt(1,id);
+                	
+                	  int rowsUpdated = updateStatement.executeUpdate();
+                      if (rowsUpdated > 0) {
+                          return ResponseEntity.ok("Help request marked as completed.");
+                      } else {
+                          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error completing help request.");
+                      }
+
+                
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Help request not found.");
             }
         }
     }
