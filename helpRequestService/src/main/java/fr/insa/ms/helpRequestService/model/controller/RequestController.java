@@ -50,9 +50,14 @@ public class RequestController {
             statement.setString(6, helpRequest.getStatus());
             statement.setString(7, helpRequest.getDate());
 
-            //int rowsAffected = statement.executeUpdate();
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+            	System.out.println("Request added successfully");
+             } else {
+                throw new SQLException("Error while adding the request.");
+            }
            
-            System.out.println("Request added successfully");
         
         } catch (SQLException e) {
             e.printStackTrace();
