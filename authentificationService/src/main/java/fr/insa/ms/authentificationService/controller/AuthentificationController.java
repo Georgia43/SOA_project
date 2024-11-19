@@ -38,7 +38,6 @@ public class AuthentificationController {
         user.put("password", hashedPassword);
         user.put("helpStatus", authentification.getHelpStatus());
         user.put("location", authentification.getLocation());
-        System.out.println("   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         restTemplate.postForObject("http://userInfoService/api/users/addUser", user, Void.class);
         
         System.out.println("user registered successfully");
