@@ -66,6 +66,8 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/koutsodi/5A/SOAProjet/authentificationService"/>
+			<item value="/home/koutsodi/5A/SOAProjet/notificationService"/>
 			<item value="/home/koutsodi/5A/SOAProjet/msDiscovery"/>
 			<item value="/home/koutsodi/5A/SOAProjet/helpRequestService"/>
 			<item value="/home/koutsodi/5A/SOAProjet/userInfoService"/>

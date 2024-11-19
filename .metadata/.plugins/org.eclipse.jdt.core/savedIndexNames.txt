@@ -100,6 +100,10 @@ INDEX VERSION 1.134+/home/koutsodi/5A/SOAProjet/.metadata/.plugins/org.eclipse.j
 4203184534.index
 3687170181.index
 2721390147.index
+<<<<<<< HEAD
+=======
+4207146541.index
+>>>>>>> geo
 1205026569.index
 3419796300.index
 4290389892.index
@@ -154,6 +158,7 @@ INDEX VERSION 1.134+/home/koutsodi/5A/SOAProjet/.metadata/.plugins/org.eclipse.j
 1961658548.index
 3496539809.index
 1575534693.index
+3073606041.index
 456682265.index
 2739916575.index
 3588909118.index
