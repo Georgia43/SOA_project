@@ -1,4 +1,4 @@
-package fr.insa.ms.helpRequestService.model.controller;
+package fr.insa.ms.helpRequestService.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
