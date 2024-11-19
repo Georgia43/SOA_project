@@ -78,7 +78,7 @@ public class UserController {
         Connection connection = DatabaseConnection.getConnection();
         
         try {
-            String insertQuery = "INSERT INTO UserInfos (id, firstName, lastName, location, helpStatus) VALUES (?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO UserInfos (id, firstName, lastName, location, helpStatus, password) VALUES (?, ?, ?, ?, ?, ?)";
         
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
           
@@ -91,6 +91,7 @@ public class UserController {
                 preparedStatement.setString(3, UserInfos.getLastName());
                 preparedStatement.setString(4, UserInfos.getLocation());
                 preparedStatement.setString(5, UserInfos.getHelpStatus());
+                preparedStatement.setString(6, UserInfos.getPassword());
 
                 int rowsAffected = preparedStatement.executeUpdate();
                 System.out.println("User added successfully");
@@ -101,27 +102,32 @@ public class UserController {
         }
     }
 	
-	@GetMapping("/{lastName}/id")
-    public static int getIdByName(@PathVariable String lastName) throws SQLException {
-        Connection connection = DatabaseConnection.getConnection();
-        String sql = "SELECT * FROM UserInfos WHERE lastName = ?";
+	@GetMapping("/{lastName}/{firstName}")
+    public UserInfos getIdByName(@PathVariable String lastName, @PathVariable String firstName) throws SQLException {
+		Connection connection = DatabaseConnection.getConnection();
+        String sql = "SELECT * FROM UserInfos WHERE lastName = ? AND firstName = ?";
         
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, lastName);
-            //statement.setString(2, password);
+            statement.setString(2, firstName);
             
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                   return resultSet.getInt("id");
+                   return  new UserInfos(resultSet.getInt("id"), resultSet.getString("lastName"),
+                		   resultSet.getString("firstName"), 
+                		   resultSet.getString("location"),
+                		   resultSet.getString("helpStatus"), 
+                		   resultSet.getString("password")
+                		   );
 
                 } else {
                     System.out.println("No matching user found.");
-                    return (Integer) null;
+                    return null;
                 }
             }
         } catch (SQLException e) {
             System.out.println("SQLException :" + e.getMessage());
-            return (Integer) null;
+            return null;
         }
     }
 }

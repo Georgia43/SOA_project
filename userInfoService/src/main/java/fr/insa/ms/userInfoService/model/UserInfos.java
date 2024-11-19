@@ -1,6 +1,5 @@
 package fr.insa.ms.userInfoService.model;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserInfos {
 	
@@ -20,7 +19,7 @@ public class UserInfos {
 	    this.firstName = firstName;
 	    this.location = location;
 	    this.helpStatus = helpStatus;
-	    setPassword(password);
+	    this.password = password;
 	}
 	public int getId(){
 	    return id;
@@ -52,13 +51,11 @@ public class UserInfos {
 	public void setHelpStatus(String helpStatus) {
 		this.helpStatus = helpStatus; 
 	}
-	public void setPassword(String password) { 
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
-		this.password = encoder.encode(password); 
-	} 
-	public boolean checkPassword(String rawPassword) { 
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
-		return encoder.matches(rawPassword, this.password); // Compare raw password with the hashed one 
+	public String getPassword() { 
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password; 
 	}
 }
 
