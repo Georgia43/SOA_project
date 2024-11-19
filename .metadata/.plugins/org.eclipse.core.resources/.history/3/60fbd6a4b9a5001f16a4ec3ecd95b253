@@ -1,0 +1,5 @@
+package fr.insa.ms.authentificationService.model;
+
+public class Authentification {
+
+}

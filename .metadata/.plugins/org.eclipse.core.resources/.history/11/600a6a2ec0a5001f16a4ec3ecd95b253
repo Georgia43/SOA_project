@@ -1,0 +1,40 @@
+package fr.insa.ms.authentificationService.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import fr.insa.ms.authentificationService.model.Authentification;
+
+@RestController
+@RequestMapping("/api/authentification")
+public class AuthentificationController {
+
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@PostMapping("/register")
+	public void registerUser(@RequestBody Authentification authentification) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(authentification.getPassword());
+        
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName",authentification.getFirstName());
+        user.put("lastName", authentification.getLastName());
+        user.put("password", hashedPassword);
+        user.put("helpStatus", authentification.getHelpStatus());
+        user.put("location", authentification.getLocation());
+        
+        restTemplate.postForObject("http://user-info-service/api/users/addUser", user, Void.class);
+        
+        System.out.println("user registered successfully");
+	}
+}

@@ -1,0 +1,27 @@
+package fr.insa.ms.authentificationService.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import fr.insa.ms.authentificationService.model.Authentification;
+
+@RestController
+@RequestMapping("/api/authentification")
+public class AuthentificationController {
+
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@PostMapping("/register")
+	public void registerUser(@RequestBody Authentification authentification) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(authentification.getPassword());
+
+	}
+}

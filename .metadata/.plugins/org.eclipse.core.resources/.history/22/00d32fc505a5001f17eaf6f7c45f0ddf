@@ -1,0 +1,22 @@
+package fr.insa.ms.notificationService.controller;
+
+import java.sql.Connection;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.insa.ms.notificationService.model.Notification;
+
+@RestController
+@RequestMapping("/api/notifications")
+public class NotificationController {
+	
+	@PostMapping("/create")
+	public void addNotification(@RequestBody Notification notification) {
+		String query = "INSERT INTO Notification (id, idUser, message, status, date) VALUES (?, ?, ?, ?, ?)";
+
+	}
+
+}
