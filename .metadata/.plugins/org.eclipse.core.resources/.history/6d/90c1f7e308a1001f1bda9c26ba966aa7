@@ -1,5 +1,0 @@
-package fr.insa.ms.helpRequestService.model;
-
-public class HelpRequest {
-
-}
