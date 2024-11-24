@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;UserInfos.java&apos; to &apos;authentificationService/src/main/java/fr.insa.ms.authentificationService.model&apos;&#x0A;- Original project: &apos;userInfoService&apos;&#x0A;- Destination element: &apos;authentificationService/src/main/java/fr.insa.ms.authentificationService.model&apos;&#x0A;- Original element: &apos;fr.insa.ms.userInfoService.model.UserInfos.java&apos;" description="Copy compilation unit" destination="=authentificationService/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;fr.insa.ms.authentificationService.model" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;fr.insa.ms.userInfoService.model{UserInfos.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1731947090693" units="1" version="1.0"/>
-</session>

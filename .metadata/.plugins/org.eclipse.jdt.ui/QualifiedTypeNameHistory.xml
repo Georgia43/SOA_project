@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="fr.insa.ms.userInfoService.model.UserInfos"/>
-    <fullyQualifiedTypeName name="fr.insa.ms.userInfoService.model.UserInfos.HelpStatus"/>
-    <fullyQualifiedTypeName name="fr.insa.ms.authentificationService.config.JwUtil"/>
-</qualifiedTypeNameHistroy>
