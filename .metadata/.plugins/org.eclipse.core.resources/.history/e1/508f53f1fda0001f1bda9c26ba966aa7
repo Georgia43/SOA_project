@@ -1,5 +1,0 @@
-package fr.insa.ms.userInfoService.config;
-
-public class DatabaseConnection {
-
-}
