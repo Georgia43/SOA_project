@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +24,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import fr.insa.ms.helpRequestService.config.DatabaseConnection;
 import fr.insa.ms.helpRequestService.model.HelpRequest;
+import fr.insa.ms.helpRequestService.model.Notification;
 
 @RestController
 @RequestMapping("/api/help-request")
 public class RequestController {
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
     @PostMapping("/create")
     public void addNewRequest(@RequestBody HelpRequest helpRequest) throws SQLException {
@@ -63,6 +71,9 @@ public class RequestController {
             e.printStackTrace();
             // Handle the exception
         }
+        
+        // send notification to user
+        sendNotification(helpRequest.getIdUser(),"A new help request has been created",helpRequest.getDate());
     }
 
 
@@ -174,8 +185,28 @@ public class RequestController {
             	helpRequest.setStatus(resultSet.getString("status"));
                 helpRequest.setIdHelper(resultSet.getInt("idHelper"));
                 requests.add(helpRequest);
-            }
+            } 
         }
         return requests;
+    }
+    
+    private void sendNotification(int idUser, String message, String date) {
+    	Notification notification = new Notification();
+    	notification.setIdUser(idUser);
+    	notification.setMessage(message);
+    	notification.setStatus("UNREAD");
+    	notification.setDate(date);
+    	
+    	HttpEntity<Notification> entity = new HttpEntity<>(notification);
+
+    	
+    	try {
+    		ResponseEntity<Void> reponse= restTemplate.exchange("http://notificationService/api/notifications/create", 
+    				HttpMethod.POST, 
+    	            entity, 
+    	            Void.class);
+    	} catch (Exception e){
+    		 e.printStackTrace();
+    	}
     }
 }
